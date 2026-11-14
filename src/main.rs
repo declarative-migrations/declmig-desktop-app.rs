@@ -10,7 +10,10 @@ fn main() {
     )
     .ok();
 
-    let cfg = DesktopConfig::from_env();
+    let cfg = DesktopConfig::try_from_env().unwrap_or_else(|message| {
+        eprintln!("desktop configuration rejected: {message}");
+        std::process::exit(2);
+    });
     DesktopApp::new(cfg).run();
 }
 
